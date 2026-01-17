@@ -1,5 +1,7 @@
-# TBP_projekt
+# Projekt iz kolegija Teorija baza podataka
 Ovaj repozitorij sadrži implementaciju aplikacije za praćenje radnih sesija zaposlenika, upravljanje projektima te izračun i analizu troškova rada kroz vrijeme. Sustav je razvijen u sklopu projektnog zadatka iz kolegija Teorija baza podataka s ciljem demonstracije primjene temporalnih i aktivnih baza podataka u stvarnom poslovnom scenariju.
+
+Aplikacija za skidanje i pokretanje rada se nalazi u TBP_projekt_Luka_Hrupec, unutra se nalaze i upute za pokretanje iste.
 
 Središnji dio sustava čini relacijska baza podataka PostgreSQL, u kojoj su implementirana poslovna pravila, izračuni i ograničenja korištenjem funkcija, okidača (triggera), pogleda (viewova) i domenskih ograničenja. Poseban naglasak stavljen je na to da se ključna poslovna logika ne nalazi u aplikacijskom sloju, već izravno u bazi podataka, čime se osigurava konzistentnost podataka i neovisnost o korisničkom sučelju.
 
