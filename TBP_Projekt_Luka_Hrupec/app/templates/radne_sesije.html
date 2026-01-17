@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <title>Radne sesije</title>
+</head>
+<body>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<nav style="margin-bottom:20px;">
+    <a href="/">Projekti</a> |
+    <a href="/radne_sesije">Radne sesije</a> |
+    <a href="/izvjestaji">Izvještaji</a>
+</nav>
+
+<hr>
+<div class="container">
+<h1>Unos radne sesije</h1>
+
+<form method="post" action="/dodaj_radnu_sesiju">
+
+    <label>Zaposlenik:</label><br>
+    <select name="zaposlenik_id" required>
+        <option value="" disabled selected>Odaberi zaposlenika</option>
+        {% for z in zaposlenici %}
+        <option value="{{ z[0] }}">{{ z[1] }} {{ z[2] }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Projekt:</label><br>
+    <select name="projekt_id" id="projekt" required>
+        <option value="" disabled selected>Odaberi projekt</option>
+        {% for p in projekti %}
+        <option value="{{ p[0] }}">{{ p[1] }}</option>
+        {% endfor %}
+    </select><br><br>
+    <div id="projekt-datumi" style="margin-top:5px; font-size: 0.9em; color:#555;">
+        <span id="datum-pocetka"></span><br>
+        <span id="datum-zavrsetka"></span>
+    </div>
+
+
+    <label>Vrsta rada:</label><br>
+    <select name="vrsta_rada_id" id="vrsta_rada" required>
+        <option value="" disabled selected>Odaberi vrstu rada</option>
+        {% for v in vrste_rada %}
+        <option value="{{ v[0] }}" data-naziv="{{ v[1] }}">
+            {{ v[1] }}
+        </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Početak rada:</label><br>
+    <input type="date" name="pocetak" id="pocetak" required><br><br>
+
+    <label>Kraj rada:</label><br>
+    <input type="date" name="kraj" id="kraj" required><br><br>
+
+    <button type="submit">Spremi radnu sesiju</button>
+</form>
+</div>
+<hr>
+<div class="container">
+<h2>Postojeće radne sesije</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Zaposlenik</th>
+        <th>Projekt</th>
+        <th>Vrsta rada</th>
+        <th>Trajanje (h)</th>
+        <th>Trošak</th>
+    </tr>
+
+    {% for rs in radne_sesije %}
+    <tr>
+        <td>{{ rs[0] }}</td>
+        <td>{{ rs[1] }}</td>
+        <td>{{ rs[2] }}</td>
+        <td>{{ rs[3] }}</td>
+        <td>{{ rs[4] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+<!-- JavaScript za automatski prikaz datuma kod redovnog rada i za prikaz datum kod odabir projekta pri unsu sesije-->
+<script>
+    const vrstaRadaSelect = document.getElementById("vrsta_rada");
+    const projektSelect = document.getElementById("projekt");
+    const pocetakInput = document.getElementById("pocetak");
+    const krajInput = document.getElementById("kraj");
+
+    async function postaviDatume() {
+        const vrstaOption =
+            vrstaRadaSelect.options[vrstaRadaSelect.selectedIndex];
+        const nazivVrsteRada = vrstaOption.dataset.naziv;
+        const projektId = projektSelect.value;
+
+        if (nazivVrsteRada === "redovni" && projektId) {
+            const response = await fetch(`/api/projekt_datumi/${projektId}`);
+            const data = await response.json();
+
+            pocetakInput.value = data.pocetak;
+            krajInput.value = data.kraj;
+
+            pocetakInput.readOnly = true;
+            krajInput.readOnly = true;
+        } else {
+            pocetakInput.readOnly = false;
+            krajInput.readOnly = false;
+        }
+    }
+
+    vrstaRadaSelect.addEventListener("change", postaviDatume);
+    projektSelect.addEventListener("change", postaviDatume);
+
+    postaviDatume();
+
+
+    document.getElementById("projekt").addEventListener("change", function () {
+        const projektId = this.value;
+
+        if (!projektId) {
+            document.getElementById("datum-pocetka").textContent = "";
+            document.getElementById("datum-zavrsetka").textContent = "";
+            return;
+        }
+
+        fetch(`/api/projekt_datumi/${projektId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("datum-pocetka").textContent =
+                    "Početak projekta: " + data.pocetak;
+
+                document.getElementById("datum-zavrsetka").textContent =
+                    "Završetak projekta: " + data.kraj;
+            });
+    });
+</script>
+
+</body>
+</html>

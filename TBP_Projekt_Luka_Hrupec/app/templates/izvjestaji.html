@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <title>Izvještaji</title>
+</head>
+<body>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<nav style="margin-bottom:20px;">
+    <a href="/">Projekti</a> |
+    <a href="/radne_sesije">Radne sesije</a> |
+    <a href="/izvjestaji">Izvještaji</a>
+</nav>
+<hr>
+
+<h1>Izvještaji</h1>
+<div class="section"></div>
+<h2>Financijski pregled projekata</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Projekt</th>
+        <th>Budžet buffer</th>
+        <th>Planirani trošak</th>
+        <th>Dodatni troškovi</th>
+        <th>Stvarni trošak</th>
+        <th>Preostali budžet</th>
+    </tr>
+    {% for r in financijski_pregled %}
+    <tr>
+        <td>{{ r[1] }}</td>  <!-- naziv_projekta -->
+        <td>{{ r[2] }}</td>  <!-- budzet_buffer -->
+        <td>{{ r[3] }}</td>  <!-- planirani_trosak -->
+        <td>{{ r[4] }}</td>  <!-- dodatni_troskovi -->
+        <td>{{ r[5] }}</td>  <!-- stvarni_trosak -->
+        <td>{{ r[6] }}</td>  <!-- preostali_budzet -->
+    </tr>
+    {% endfor %}
+</table>
+</div>
+<br><br>
+
+<div class="section">
+<h2>Trošak po zaposleniku</h2>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Zaposlenik</th>
+        <th>Ukupno sati</th>
+        <th>Ukupni trošak</th>
+    </tr>
+    {% for r in trosak_po_zaposleniku %}
+    <tr>
+        <td>{{ r[1] }} {{ r[2] }}</td>  <!-- ime + prezime -->
+        <td>{{ r[3] }}</td>             <!-- ukupno_sati -->
+        <td>{{ r[4] }}</td>             <!-- ukupni_trosak -->
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+<br><br>
+
+<div class="section">
+<h2>Trošak rada po projektu</h2>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Projekt</th>
+        <th>Trošak rada</th>
+    </tr>
+    {% for r in trosak_po_projektu %}
+    <tr>
+        <td>{{ r[1] }}</td>  <!-- naziv_projekta -->
+        <td>{{ r[2] }}</td>  <!-- trosak_rada -->
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+</body>
+</html>

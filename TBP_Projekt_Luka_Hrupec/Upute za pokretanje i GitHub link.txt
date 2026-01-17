@@ -1,0 +1,62 @@
+1. Preuzimanje aplikacije
+Aplikaciju je potrebno preuzeti u obliku jedinstvene arhive (ZIP) ili klonirati iz Git repozitorija.
+Link na GitHub: https://github.com/lhrupec22/TBP_projekt.git 
+
+
+Ako se koristi Git, u naredbenom retku (Git Bash / terminal) izvršiti:
+git clone <URL_GIT_REPOZITORIJA>
+
+Nakon preuzimanja, potrebno je raspakirati arhivu i pozicionirati se u glavni direktorij projekta.
+
+
+2. Preduvjeti
+Za pokretanje aplikacije potrebno je imati instalirano:
+- Python 3.10 ili noviji
+- PostgreSQL 15 ili noviji
+- Git (opcionalno, ako se koristi repozitorij)
+- pip
+- flask
+- pgAdmin (opcionalno, ali lakše nego raditi u terminalu)
+
+
+3. Kreiranje baze podataka
+U PostgreSQL-u je potrebno kreirati praznu bazu podataka.
+Primjer (u pgAdminu ili psql konzoli):
+CREATE DATABASE TBP_projekt;   -> MORATE KORISTITI OVAJ NAZIV
+
+Zatim se potrebno spojiti na kreiranu bazu i izvršiti inicijalnu SQL skriptu `init.sql`, koja:
+- kreira sve tablice
+- definira funkcije i okidače
+- inicijalizira osnovne podatke (zaposlenici, vrste rada)
+
+U pgAdminu:
+- otvoriti Query Tool
+- učitati datoteku `init.sql`
+- izvršiti skriptu
+
+
+4. Konfiguracija baze u aplikaciji
+U datoteci `app.py`potrebno je provjeriti parametre za spajanje na bazu podataka:
+- naziv baze
+- korisničko ime
+- lozinku
+- host i port
+
+
+5. Pokretanje aplikacije
+Aplikacija se pokreće iz glavnog direktorija projekta naredbom (preporučam pomoću Git Bash):
+
+python app.py
+
+Ako je sve ispravno konfigurirano, u terminalu će se pojaviti poruka da je Flask aplikacija pokrenuta.
+
+
+8. Korištenje aplikacije
+Aplikaciji se pristupa putem web preglednika na adresi:
+http://127.0.0.1:5000
+
+Kroz web sučelje moguće je:
+- unositi projekte
+- evidentirati radne sesije
+- dodavati dodatne troškove
+- pregledavati financijske i analitičke izvještaje
